@@ -1,5 +1,5 @@
-import { createLog } from "../../backend/logs_operations.ts";
-import { updateSettings } from "../../backend/settings_operations.ts";
+import { createLog } from "../../backend/logs.requests.ts";
+import { updateSettings } from "../../backend/settings.requests.ts";
 import { LogLevel } from "../../backend/types.ts";
 import { Composer } from "../../libs/deps.ts";
 import { BotContext } from "../../bot/types.ts";

@@ -1,4 +1,4 @@
-import { updateSettings } from "../../../backend/settings_operations.ts";
+import { updateSettings } from "../../../backend/settings.requests.ts";
 import { MenuTemplate, createBackMainMenuButtons } from "../../../libs/deps.ts";
 import { BotContext } from "../../../bot/types.ts";
 
