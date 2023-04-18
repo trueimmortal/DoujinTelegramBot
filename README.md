@@ -1,6 +1,6 @@
 # Telegram Bot
 
-This telegram bot that requests doujins or random doujins from [exhentai](https://exhentai.org/) or [e-hentai](https://e-hentai.org). This bot is useless without it's API.
+This telegram bot that requests doujins or random doujins from [exhentai](https://exhentai.org/) or [e-hentai](https://e-hentai.org). This bot is useless without it's API. You can find the API [here](https://github.com/trueimmortal/DoujinApi)
 
 This bot was made for personal use to avoid copy pasting entire galleries into telegram. For the moment it only handles ExHentai/E-Hentai galleries, but I might add support for other sites in the future as I have built the backend with that in mind.
 
@@ -24,6 +24,8 @@ if you want to run this bot outside of docker, you need to install the following
 ## Settings
 
 To change the settings, you can either use raw API calls or the bot. To change the settings via the bot use the `/settings` command. This will show you the current settings and allow you to modify them. Follow the instructions, this feature was added in a hurry so it might be a bit confusing.
+
+***IMPORTANT***: You will need to set the exhentai cookie in the settings if you want access to exhentai otherwise only e-hentai links will work. You can get the cookie by logging in to exhentai and then copy the cookie from the browser. The cookie should look something like this: `ipb_member_id=123456789; ipb_pass_hash=123456789; igneous=123456789; sk=123456789;`
 
 **NOTE**: To manage allowed groups and whitelisted users, you will need their IDs, groups usually starts with a `-`.
 
