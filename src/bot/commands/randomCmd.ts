@@ -10,6 +10,7 @@ import {
 import { BotContext } from "../../bot/types.ts";
 import { validateTags } from "../../libs/utils.ts";
 import { sendDoujin, sendLoadingAnim } from "../utils.ts";
+import { removeJobFromQueue } from "../middlewares/jobQueue.ts";
 
 const composer = new Composer<BotContext>();
 
@@ -31,6 +32,7 @@ composer.command("random", async (ctx) => {
         const doujin = await getRandDoujin(ctx.match);
         await updateDailyUsage(ctx.from);
         await sendDoujin(ctx, doujin, loadingMessage);
+        removeJobFromQueue(ctx.from?.id!);
     } catch (error) {
         if (error instanceof InvalidTagFormatError) {
         } else if (error instanceof NoDoujinFoundError) {
@@ -52,6 +54,7 @@ composer.command("random", async (ctx) => {
         } else {
             throw new Error(error.message);
         }
+        removeJobFromQueue(ctx.from?.id!);
     }
 });
 

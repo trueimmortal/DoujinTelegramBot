@@ -13,6 +13,7 @@ import {
 import { BotContext } from "../../bot/types.ts";
 import { verifyUrl } from "../../libs/utils.ts";
 import { sendLoadingAnim, sendDoujin } from "../utils.ts";
+import { removeJobFromQueue } from "../middlewares/jobQueue.ts";
 
 const composer = new Composer<BotContext>();
 
@@ -25,6 +26,7 @@ composer.command("fetch", async (ctx) => {
             await updateDailyUsage(ctx.from);
             const doujin = await fetchDoujin(ctx.match);
             await sendDoujin(ctx, doujin, loadingMessage);
+            removeJobFromQueue(ctx.from?.id!);
         } catch (error) {
             console.error(LOG_LEVELS.ERROR, error.message);
             if (error instanceof NoResultsError) {
@@ -54,6 +56,7 @@ composer.command("fetch", async (ctx) => {
                     caption: "That url is not valid!",
                 });
             }
+            removeJobFromQueue(ctx.from?.id!);
         }
     } else {
         await ctx.reply("Please pass a valid E-Hentai or ExHentai url!");

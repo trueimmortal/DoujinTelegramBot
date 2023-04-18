@@ -9,6 +9,7 @@ import { settingsMenuMiddleware } from "./bot/menu/SettingsMenu.ts";
 import {
 allowedGroupsCheck,
     checkDailyUsage,
+    jobQueueMiddleware,
     onlyUsersInGroups,
     protectCommands,
 } from "./bot/middlewares/index.ts";
@@ -23,6 +24,7 @@ import {
 } from "./bot/commands/index.ts";
 import { BotContext } from "./bot/types.ts";
 import { postingGallery, postingZip } from "./bot/utils.ts";
+import { removeJobFromQueue } from "./bot/middlewares/jobQueue.ts";
 
 const bot = new Bot<BotContext>(Deno.env.get("TELEGRAM_BOT_TOKEN")!);
 let settings = await getSettings();
@@ -38,7 +40,7 @@ bot.use(allowedGroupsCheck); // Check if the group that added the bot is in the 
 bot.use(onlyUsersInGroups) // Check if the user is in a group that is allowed to use the bot.
 bot.use(protectCommands); // Protect the settings command from non-owners.
 bot.use(checkDailyUsage); // Check if the user has reached the daily limit.
-
+bot.use(jobQueueMiddleware)
 // Commands, I wouldn't remove the settings, settings related commands.
 bot.use(addRemoveGroupCmd); // Add/remove group command
 bot.use(addRemoveUserCmd); // Add/remove user command
@@ -125,6 +127,7 @@ bot.catch(async (err) => {
                 "Something went wrong! If this keeps happening please contact @trueimmortal",
         });
     }
+    removeJobFromQueue(ctx.from?.id!);
 });
 
 const handle = run(bot, {
