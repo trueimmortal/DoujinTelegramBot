@@ -100,7 +100,7 @@ You can run this bot in docker. You need to have [docker](https://www.docker.com
 
 ```bash
 docker build -t telegram-bot .
-docker run -d --name telegram-bot telegram-bot
+docker run -d --env TELEGRAM_BOT_TOKEN={token} --env API_KEY={api_key} --env API_BASE_URL={api_base_url} --name telegram-bot telegram-bot 
 ```
 
 ## Run
@@ -118,7 +118,7 @@ These are the environment variables you need to set either in the .env file insi
 
 - `TELEGRAM_BOT_TOKEN` - telegram bot token
 - `API_KEY` - api key for the API
-- `API_BASE_URL` - base url for the API (if not using docker/docker-compose)
+- `API_BASE_URL` - base url for the API
 
 ## Disclaimer
 
