@@ -10,10 +10,10 @@ const getSettings = async (): Promise<Settings> => {
     const res = await fetch(`${API_URL}/settings`, {
         headers: API_REQUEST_HEADERS,
     });
-    const settings = await res.json();
     if (res.status != 200) {
         throw new FetchSettingsError("Error fetching settings");
     }
+    const settings = await res.json();
     return settings as Settings;
 };
 
