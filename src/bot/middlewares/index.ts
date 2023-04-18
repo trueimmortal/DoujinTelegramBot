@@ -1,13 +1,11 @@
-import checkDailyUsageMiddleware from "./checkDailyUsage.ts";
-import protectCommandsMiddleware from "./protectCommands.ts";
-import jobQueueMiddleware from "./jobQueue.ts";
-import onlyUsersInGroup from "./onlyUsersInGroups.ts";
+import checkDailyUsage from "./checkDailyUsage.ts";
+import protectCommands from "./protectCommands.ts";
+import onlyUsersInGroups from "./onlyUsersInGroups.ts";
 import allowedGroupsCheck from "./allowedGroupCheck.ts";
 
 export {
-    checkDailyUsageMiddleware,
-    protectCommandsMiddleware,
-    jobQueueMiddleware,
-    onlyUsersInGroup,
+    checkDailyUsage,
+    protectCommands,
+    onlyUsersInGroups,
     allowedGroupsCheck,
 };

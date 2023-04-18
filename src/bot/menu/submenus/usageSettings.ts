@@ -49,23 +49,27 @@ subMenuUsageSettings.interact("✅ Whitelisted users", "allowedUsersSettings", {
         return true;
     },
 });
-subMenuUsageSettings.interact("💬 Whitelisted groups", "allowedGroupsSettings", {
-    joinLastRow: true,
-    do: async (ctx) => {
-        // make a list of all the groups the bot is in as a string
-        const groups = ctx.config.whitelistGroups.map((group) => {
-            return `Group id : ${group}`;
-        });
-        await ctx.reply("Here are the groups the bot is allowed in :");
-        groups.length === 0
-            ? await ctx.reply("No groups are whitelisted.")
-            : await ctx.reply(groups.join("\n"));
-        await ctx.reply(
-            "Use the /addGroup command to add a group to the whitelist and the /removeGroup command to remove a group from the whitelist."
-        );
-        return true;
-    },
-});
+subMenuUsageSettings.interact(
+    "💬 Whitelisted groups",
+    "allowedGroupsSettings",
+    {
+        joinLastRow: true,
+        do: async (ctx) => {
+            // make a list of all the groups the bot is in as a string
+            const groups = ctx.config.whitelistGroups.map((group) => {
+                return `Group id : ${group}`;
+            });
+            await ctx.reply("Here are the groups the bot is allowed in :");
+            groups.length === 0
+                ? await ctx.reply("No groups are whitelisted.")
+                : await ctx.reply(groups.join("\n"));
+            await ctx.reply(
+                "Use the /addGroup command to add a group to the whitelist and the /removeGroup command to remove a group from the whitelist."
+            );
+            return true;
+        },
+    }
+);
 subMenuUsageSettings.manualRow(createBackMainMenuButtons());
 
 export default subMenuUsageSettings;
