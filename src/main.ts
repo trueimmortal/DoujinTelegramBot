@@ -7,6 +7,7 @@ import { Bot, run } from "./libs/deps.ts";
 import { BotError } from "./libs/errors.ts";
 import { settingsMenuMiddleware } from "./bot/menu/SettingsMenu.ts";
 import {
+allowedGroupsCheck,
     checkDailyUsageMiddleware,
     onlyUsersInGroup,
     protectCommandsMiddleware,
@@ -38,9 +39,11 @@ bot.use(async (ctx, next) => {
 
 // @ts-ignore
 bot.use(settingsMenuMiddleware);
-bot.use(onlyUsersInGroup)
-bot.use(protectCommandsMiddleware);
-bot.use(checkDailyUsageMiddleware);
+
+bot.use(allowedGroupsCheck); // Check if the group that added the bot is in the allowed groups list.
+bot.use(onlyUsersInGroup) // Check if the user is in a group that is allowed to use the bot.
+bot.use(protectCommandsMiddleware); // Protect the settings command from non-owners.
+bot.use(checkDailyUsageMiddleware); // Check if the user has reached the daily limit.
 // Commands
 bot.use(addRemoveGroupCmd);
 bot.use(addRemoveUserCmd);
