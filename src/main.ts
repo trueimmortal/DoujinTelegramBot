@@ -8,9 +8,9 @@ import { BotError } from "./libs/errors.ts";
 import { settingsMenuMiddleware } from "./bot/menu/SettingsMenu.ts";
 import {
 allowedGroupsCheck,
-    checkDailyUsageMiddleware,
-    onlyUsersInGroup,
-    protectCommandsMiddleware,
+    checkDailyUsage,
+    onlyUsersInGroups,
+    protectCommands,
 } from "./bot/middlewares/index.ts";
 import {
     addRemoveGroupCmd,
@@ -25,33 +25,30 @@ import { BotContext } from "./bot/types.ts";
 import { postingGallery, postingZip } from "./bot/utils.ts";
 
 const bot = new Bot<BotContext>(Deno.env.get("TELEGRAM_BOT_TOKEN_TEST")!);
-
 let settings = await getSettings();
-
 bot.use(async (ctx, next) => {
     ctx.config = settings;
-    ctx.middleWares = {
-        dailyLimitMw: true,
-        allowedGroupsMw: true,
-    };
     await next();
 });
 
 // @ts-ignore
 bot.use(settingsMenuMiddleware);
-
+// Middlewares, order matters.
 bot.use(allowedGroupsCheck); // Check if the group that added the bot is in the allowed groups list.
-bot.use(onlyUsersInGroup) // Check if the user is in a group that is allowed to use the bot.
-bot.use(protectCommandsMiddleware); // Protect the settings command from non-owners.
-bot.use(checkDailyUsageMiddleware); // Check if the user has reached the daily limit.
-// Commands
-bot.use(addRemoveGroupCmd);
-bot.use(addRemoveUserCmd);
-bot.use(settingsCmd);
-bot.use(randomCmd);
-bot.use(fetchCmd);
-bot.use(statsCmd);
-bot.use(infoCmd);
+bot.use(onlyUsersInGroups) // Check if the user is in a group that is allowed to use the bot.
+bot.use(protectCommands); // Protect the settings command from non-owners.
+bot.use(checkDailyUsage); // Check if the user has reached the daily limit.
+
+// Commands, I wouldn't remove the settings, settings related commands.
+bot.use(addRemoveGroupCmd); // Add/remove group command
+bot.use(addRemoveUserCmd); // Add/remove user command
+bot.use(settingsCmd); // Settings command
+
+// These you can remove the ones you don't want.
+bot.use(randomCmd); // Random command
+bot.use(fetchCmd); // Fetch command
+bot.use(statsCmd); // Stats command
+bot.use(infoCmd); // Info command
 
 bot.api.setMyCommands([
     {command:"start",description:"▶️ Start the bot."},
