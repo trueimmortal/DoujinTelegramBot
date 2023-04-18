@@ -14,7 +14,7 @@ const CheckUserWhitelist = async (ctx: BotContext, next: NextFunction) => {
         const commands = ctx.msg?.entities?.filter(
             (entity) => entity.type === "bot_command"
         );
-        if (commands) {
+        if (commands && commands.length > 0) {
             const limitedCommands = ["fetch", "random"];
             if (
                 !ctx.config.whitelistUsers.includes(ctx.from?.id) &&

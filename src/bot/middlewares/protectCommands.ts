@@ -18,7 +18,7 @@ const protectCommands = async (ctx: BotContext, next: NextFunction) => {
     const commands = ctx.msg?.entities?.filter(
         (entity) => entity.type === "bot_command"
     );
-    if (commands && !ctx.from?.is_bot) {
+    if (commands && !ctx.from?.is_bot && commands.length > 0) {
         for (const command of commands) {
             const commandName = ctx.msg?.text?.slice(
                 command.offset + 1,
