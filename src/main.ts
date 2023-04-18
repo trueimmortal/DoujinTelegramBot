@@ -8,6 +8,7 @@ import { BotError } from "./libs/errors.ts";
 import { settingsMenuMiddleware } from "./bot/menu/SettingsMenu.ts";
 import {
     checkDailyUsageMiddleware,
+    onlyUsersInGroup,
     protectCommandsMiddleware,
 } from "./bot/middlewares/index.ts";
 import {
@@ -37,6 +38,7 @@ bot.use(async (ctx, next) => {
 
 // @ts-ignore
 bot.use(settingsMenuMiddleware);
+bot.use(onlyUsersInGroup)
 bot.use(protectCommandsMiddleware);
 bot.use(checkDailyUsageMiddleware);
 // Commands
@@ -48,6 +50,15 @@ bot.use(fetchCmd);
 bot.use(statsCmd);
 bot.use(infoCmd);
 
+bot.api.setMyCommands([
+    {command:"start",description:"▶️ Start the bot."},
+    {command:"info",description:"ℹ️ Get info on the bot."},
+    {command:"stats",description: "📊 Get your user stats."},
+    {command:"fetch",description:"🔎 Fetch a doujin with it's url."},
+    {command:"random", description:"🎲 Get a random doujin by optionaly giving tags."},
+    {command:"settings",description:"🛠️ Set the bot settings."}
+])
+
 /** Handle the /start command. */
 bot.command("start", async (ctx) => {
     if (ctx.config.ownerId === 0) {
@@ -55,6 +66,7 @@ bot.command("start", async (ctx) => {
             "This is the first start of the bot! You will be set as the owner of the bot."
         );
         ctx.config.ownerId = ctx.from?.id!;
+        ctx.config.whitelistUsers.push(ctx.from?.id!);
         await updateSettings(ctx.config);
         await createLog(
             LogLevel.Info,
