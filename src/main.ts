@@ -24,7 +24,7 @@ import {
 import { BotContext } from "./bot/types.ts";
 import { postingGallery, postingZip } from "./bot/utils.ts";
 
-const bot = new Bot<BotContext>(Deno.env.get("TELEGRAM_BOT_TOKEN_TEST")!);
+const bot = new Bot<BotContext>(Deno.env.get("TELEGRAM_BOT_TOKEN")!);
 let settings = await getSettings();
 bot.use(async (ctx, next) => {
     ctx.config = settings;
