@@ -55,7 +55,7 @@ composer.filter(settingsFilter).on("msg", async (ctx) => {
             }
             return;
         default:
-            ctx.reply("no clue");
+            break;
     }
 });
 
