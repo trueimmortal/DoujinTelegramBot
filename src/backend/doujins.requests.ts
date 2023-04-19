@@ -56,7 +56,9 @@ const getRandDoujin = async (tags?: string) => {
             case 400:
                 if (err.title === "NoExhentaiCookies")
                     throw new NoExhentaiCookieError(err.title);
-                throw new BadRequestError("Request error");
+                throw new BadRequestError(err.detail!);
+            case 500:
+                throw new Error(err.detail)
             default:
                 throw new Error("Error while getting doujin");
         }
@@ -78,6 +80,8 @@ const getDoujinZip = async (id: string) => {
                 throw new NoDoujinFoundError(err.title);
             case 400:
                 throw new BadRequestError(err.title);
+            case 500:
+                throw new Error(err.detail)
             default:
                 throw new Error(err.title);
         }

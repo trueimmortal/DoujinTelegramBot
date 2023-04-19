@@ -1,8 +1,5 @@
 import { fetchDoujin } from "../../backend/doujins.requests.ts";
-import {
-    updateDailyUsage,
-    getUser,
-} from "../../backend/users.requests.ts";
+import { updateDailyUsage, getUser } from "../../backend/users.requests.ts";
 import { LOG_LEVELS, ERROR_GIF } from "../../libs/constants.ts";
 import { Composer } from "../../libs/deps.ts";
 import {
@@ -37,8 +34,7 @@ composer.command("fetch", async (ctx) => {
                 await ctx.replyWithAnimation(ERROR_GIF, {
                     caption: "No results found at that URL!",
                 });
-            }
-            if (error instanceof NoExhentaiCookieError) {
+            } else if (error instanceof NoExhentaiCookieError) {
                 await ctx.api.deleteMessage(
                     loadingMessage.chat.id,
                     loadingMessage.message_id
@@ -46,14 +42,21 @@ composer.command("fetch", async (ctx) => {
                 await ctx.replyWithAnimation(ERROR_GIF, {
                     caption: error.caption,
                 });
-            }
-            if (error instanceof BadRequestError) {
+            } else if (error instanceof BadRequestError) {
                 await ctx.api.deleteMessage(
                     loadingMessage.chat.id,
                     loadingMessage.message_id
                 );
                 await ctx.replyWithAnimation(ERROR_GIF, {
                     caption: "That url is not valid!",
+                });
+            }else{
+                await ctx.api.deleteMessage(
+                    loadingMessage.chat.id,
+                    loadingMessage.message_id
+                );
+                await ctx.replyWithAnimation(ERROR_GIF, {
+                    caption: `An error occured : ${error.message} `,
                 });
             }
             removeJobFromQueue(ctx.from?.id!);
