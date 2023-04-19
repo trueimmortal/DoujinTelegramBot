@@ -50,7 +50,13 @@ composer.command("random", async (ctx) => {
                 caption: "Bad exhentai cookies!",
             });
         } else {
-            throw new Error(error.message);
+            await ctx.api.deleteMessage(
+                loadingMessage.chat.id,
+                loadingMessage.message_id
+            );
+            await ctx.replyWithAnimation(ERROR_GIF, {
+                caption: `An error occured : ${error.message} `,
+            });
         }
     }
 });
