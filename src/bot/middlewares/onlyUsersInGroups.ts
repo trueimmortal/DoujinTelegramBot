@@ -11,13 +11,19 @@ import { BotContext } from "../types.ts";
 const onlyUsersInGroup = async (ctx: BotContext, next: NextFunction) => {
     if(ctx.chat?.type === "private" && ctx.config.whitelistGroups.length > 0 && !ctx.config.whitelistUsers.includes(ctx.from?.id!)) {
         let chatMember;
+        let isMember = false;
         for (const group of ctx.config.whitelistGroups) {
             try {
                 chatMember = await ctx.api.getChatMember(group, ctx.from?.id!);
+                if(chatMember.status === "member" || chatMember.status === "administrator" || chatMember.status === "creator")
+                {
+                    isMember = true;
+                    break;
+                }
             } catch (err : any) {
             }
         }
-        if (!chatMember) {
+        if (!isMember) {
             await ctx.reply("You aren't allowed to use this bot!");
             return;
         }
