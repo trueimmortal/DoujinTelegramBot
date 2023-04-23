@@ -14,7 +14,7 @@ export const settingsMenu = new MenuTemplate<BotContext>(
  * @returns  true if the message is a reply to a bot message, false otherwise.
  */
 export const settingsFilter = async (ctx: BotContext) => {
-    if (ctx.msg?.reply_to_message?.from?.is_bot) {
+    if (ctx.msg?.reply_to_message?.from?.is_bot && ctx.chat?.type === "private") {
         return true;
     }
     return false;
